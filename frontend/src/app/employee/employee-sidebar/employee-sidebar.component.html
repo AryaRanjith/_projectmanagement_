@@ -1,0 +1,27 @@
+<div class="employee-sidebar" [class.collapsed]="isCollapsed">
+    <!-- Brand Section -->
+    <div class="sidebar-brand">
+        <div class="brand-logo initials">
+            EMP
+        </div>
+        <div class="brand-info" *ngIf="!isCollapsed">
+            <h3>Employee</h3>
+        </div>
+    </div>
+
+    <div class="sidebar-content">
+        <!-- Main Menu -->
+        <nav class="sidebar-nav">
+            <a routerLink="/employee/dashboard" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-th-large"></i>
+                <span *ngIf="!isCollapsed">Dashboard</span>
+            </a>
+            <!-- Add more links here if needed, e.g. My Tasks, Calendar -->
+        </nav>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer" (click)="isCollapsed = !isCollapsed">
+        <i class="fa" [class.fa-angle-left]="!isCollapsed" [class.fa-angle-right]="isCollapsed"></i>
+    </div>
+</div>

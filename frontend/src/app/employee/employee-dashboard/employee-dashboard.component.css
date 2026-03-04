@@ -1,0 +1,201 @@
+/* Main Layout */
+.employee-dashboard {
+    padding: 30px;
+    background: #f8fafc;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Header Section */
+.welcome-header {
+    background: white;
+    padding: 30px;
+    border: 1px solid #e2e8f0;
+    margin-bottom: 30px;
+    border-radius: 4px;
+    /* Square feel */
+}
+
+.welcome-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.user-avatar-icon {
+    width: 50px;
+    height: 50px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6366f1;
+    font-size: 24px;
+}
+
+.welcome-text h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.welcome-text p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 4px 0 0;
+}
+
+/* Task Grid */
+.task-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+/* Simple Square Card */
+.task-simple-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s;
+}
+
+.task-simple-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.card-content {
+    padding: 24px;
+}
+
+.task-simple-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin: 0 0 16px;
+    color: #1e293b;
+}
+
+.task-detail {
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #475569;
+}
+
+.task-detail strong {
+    color: #1e293b;
+    margin-right: 8px;
+}
+
+/* Footer & Actions */
+.card-footer-simple {
+    padding: 20px 24px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    min-width: 80px;
+    text-align: center;
+}
+
+.status-pill.todo {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.status-pill.in_progress {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.status-pill.done {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.status-dropdown {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 14px;
+    background: #fff;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-primary-square {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primary-square:hover {
+    background: #4338ca;
+}
+
+.btn-primary-square:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    width: 100%;
+}
+
+/* Progress Bar */
+.task-progress {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.progress-bar-bg {
+    height: 8px;
+    background: #f1f5f9;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}

@@ -1,0 +1,272 @@
+/* Base Styles consistent with Organisation Page */
+* {
+    box-sizing: border-box;
+}
+
+.admin-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.header-left h1 {
+    font-size: 1.875rem;
+    font-weight: 600;
+    color: #1e1b4b;
+    line-height: 1;
+}
+
+/* Buttons */
+.btn-primary {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: #4f46e5;
+}
+
+.btn-secondary {
+    background: white;
+    border: 1px solid #cbd5e1;
+    color: #64748b;
+    padding: 0.625rem 1.25rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background: #f1f5f9;
+}
+
+/* Table */
+.content-card {
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    min-width: 800px;
+}
+
+.admin-table th {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-size: 0.85rem;
+    font-weight: 700;
+    /* As requested */
+    color: #4c1d95;
+    /* Dark Violet */
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.admin-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+    background: #f8fafc;
+}
+
+/* Badges */
+.badge-type {
+    background: #eff6ff;
+    color: #1d4ed8;
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border: 1px solid #dbeafe;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-badge.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.status-badge.disabled {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.font-medium {
+    font-weight: 500;
+}
+
+.text-slate-900 {
+    color: #0f172a;
+}
+
+/* Actions */
+.actions {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: color 0.2s;
+}
+
+.btn-icon:hover {
+    color: #6366f1;
+}
+
+.btn-icon.delete:hover {
+    color: #ef4444;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+}
+
+.modal-content {
+    background: white;
+    border-radius: 1rem;
+    width: 100%;
+    max-width: 500px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1e293b;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #64748b;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.checkbox input {
+    width: 1.1rem;
+    height: 1.1rem;
+}
+
+.checkbox label {
+    margin: 0;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.fa-spinner {
+    color: #6366f1;
+}

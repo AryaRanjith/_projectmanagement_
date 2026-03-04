@@ -1,0 +1,186 @@
+<div class="welcome-banner" *ngIf="!loading && stats">
+    <div class="welcome-card card-main">
+        <div class="welcome-content">
+            <h1>Welcome back, {{ stats.owner_name || 'Great Stack' }}</h1>
+            <p>Your workspace is ready. Let's finish setting up your organization.</p>
+        </div>
+
+        <div class="setup-steps-vertical">
+            <div class="setup-step active">
+                <div class="step-icon"><i class="fa fa-users"></i></div>
+                <div class="step-text">
+                    <span class="step-title">Add your team members</span>
+                    <span class="step-desc">Invite people to collaborate on projects</span>
+                </div>
+            </div>
+            <div class="setup-step">
+                <div class="step-icon"><i class="fa fa-envelope"></i></div>
+                <div class="step-text">
+                    <span class="step-title">Send invitations</span>
+                    <span class="step-desc">They'll receive an email to join</span>
+                </div>
+            </div>
+            <div class="setup-step">
+                <div class="step-icon"><i class="fa fa-check-square"></i></div>
+                <div class="step-text">
+                    <span class="step-title">Assign first task</span>
+                    <span class="step-desc">Get the momentum going</span>
+                </div>
+            </div>
+            <div class="setup-step">
+                <div class="step-icon"><i class="fa fa-link"></i></div>
+                <div class="step-text">
+                    <span class="step-title">Share project link</span>
+                    <span class="step-desc">Keep everyone in the loop</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="promo-card">
+        <div class="icon-circle">
+            <div class="glow-effect"></div>
+            <i class="fa fa-user-plus primary-icon"></i>
+        </div>
+        <h3>Expand your team</h3>
+        <p>Invite more members to accelerate your project growth.</p>
+        <button class="btn-cta" routerLink="/owner/employees">
+            Invite users
+        </button>
+    </div>
+</div>
+
+<!-- Main Stats Summary -->
+<div class="stats-summary-row" *ngIf="!loading && stats">
+    <div class="summary-card">
+        <div class="summary-details">
+            <span class="summary-label">Total Projects</span>
+            <span class="summary-value">{{ stats.total_projects }}</span>
+            <span class="summary-subtext">projects in workspace</span>
+        </div>
+        <div class="summary-icon blue">
+            <i class="fa fa-folder"></i>
+        </div>
+    </div>
+    <div class="summary-card">
+        <div class="summary-details">
+            <span class="summary-label">Completed Projects</span>
+            <span class="summary-value">{{ stats.active_projects }}</span>
+            <span class="summary-subtext">of {{ stats.total_projects }} total</span>
+        </div>
+        <div class="summary-icon green">
+            <i class="fa fa-check-circle"></i>
+        </div>
+    </div>
+
+    <div class="summary-card">
+        <div class="summary-details">
+            <span class="summary-label">Overdue</span>
+            <span class="summary-value">{{ stats.overdue_tasks }}</span>
+            <span class="summary-subtext">need attention</span>
+        </div>
+        <div class="summary-icon orange">
+            <i class="fa fa-exclamation-triangle"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Grid -->
+<div class="dashboard-grid-layout" *ngIf="!loading && stats">
+    <!-- Main Column: Project Overview -->
+    <div class="main-column">
+        <div class="content-card">
+            <div class="card-title-row">
+                <h2>Project Overview</h2>
+                <a routerLink="/owner/projects" class="view-all-link">View all <i class="fa fa-arrow-right"></i></a>
+            </div>
+
+            <div class="project-list">
+                <div class="project-card" *ngFor="let p of stats.project_overview">
+                    <div class="project-main">
+                        <div class="project-header">
+                            <h3>{{ p.name }}</h3>
+                            <span class="badge" [ngClass]="p.status.toLowerCase()">{{ p.status }}</span>
+                        </div>
+                        <p class="project-description">{{ p.description || 'No description provided' }}</p>
+                        <div class="project-meta">
+                            <span><i class="fa fa-users"></i> {{ p.members_count }} members</span>
+                            <span *ngIf="p.end_date"><i class="fa fa-calendar"></i> {{ p.end_date | date:'MMM d, y'
+                                }}</span>
+                        </div>
+                    </div>
+                    <div class="project-progress">
+                        <div class="progress-label">
+                            <span>Progress</span>
+                            <span class="value">{{ p.progress }}%</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" [style.width.%]="p.progress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Preview (Image 1 influence) -->
+        <div class="analytics-preview-row">
+            <div class="content-card analytics-section">
+                <h3>Tasks by Priority</h3>
+                <div class="priority-breakdown">
+                    <div class="priority-item" *ngFor="let p of ['URGENT', 'HIGH', 'MEDIUM', 'LOW']">
+                        <div class="label-group">
+                            <i class="fa fa-caret-right" [ngClass]="p.toLowerCase()"></i>
+                            <span>{{ p }}</span>
+                        </div>
+                        <div class="progress-group">
+                            <div class="track">
+                                <div class="fill" [ngClass]="p.toLowerCase()"
+                                    [style.width.%]="(stats.priority_stats[p] / stats.total_tasks) * 100"></div>
+                            </div>
+                            <span class="count">{{ stats.priority_stats[p] }} tasks</span>
+                            <span class="percent">{{ stats.total_tasks > 0 ? ((stats.priority_stats[p] /
+                                stats.total_tasks) | percent:'1.0-0') : '0%' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Side Column: My Tasks & Overdue -->
+    <div class="side-column">
+        <!-- My Tasks Sidebar -->
+
+
+        <!-- Overdue Sidebar -->
+        <div class="content-card sidebar-card overdue">
+            <div class="card-title-row">
+                <div class="title-with-count">
+                    <i class="fa fa-clock"></i>
+                    <h3>Overdue</h3>
+                    <span class="count-badge danger">{{ stats.overdue_tasks }}</span>
+                </div>
+            </div>
+            <div class="sidebar-list">
+                <div class="sidebar-item overdue-item" *ngFor="let t of stats.overdue_details">
+                    <div class="item-content">
+                        <h4>{{ t.title }}</h4>
+                        <span class="item-meta danger">{{ t.project_name }}</span>
+                    </div>
+                    <div class="overdue-tag">
+                        <i class="fa fa-exclamation-circle"></i>
+                    </div>
+                </div>
+                <div class="empty-list" *ngIf="!stats.overdue_details.length">
+                    No overdue tasks
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="loading">
+    <div class="spinner-modern"></div>
+    <p>Preparing your workspace...</p>
+</div>

@@ -1,0 +1,122 @@
+<div class="admin-container">
+    <div class="page-header">
+        <div class="header-left">
+            <h1>Subscription Plans</h1>
+        </div>
+        <div class="header-actions">
+            <button class="btn-primary" (click)="openCreateModal()">
+                <i class="fas fa-plus"></i> New Plan
+            </button>
+        </div>
+    </div>
+
+    <div class="alert alert-danger" *ngIf="error">
+        {{ error }}
+    </div>
+
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Duration</th>
+                        <th>Users</th>
+                        <th>Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loading && plans.length === 0">
+                        <td colspan="7" class="text-center">
+                            <i class="fas fa-spinner fa-spin fa-2x"></i>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!loading && plans.length === 0">
+                        <td colspan="7" class="text-center">No plans found.</td>
+                    </tr>
+                    <tr *ngFor="let plan of plans">
+                        <td>
+                            <span class="font-medium text-slate-900">{{ plan.name }}</span>
+                        </td>
+                        <td>
+                            <span class="badge-type">{{ plan.plan_type }}</span>
+                        </td>
+                        <td>{{ plan.duration_months }} Months</td>
+                        <td>{{ plan.max_users }} Users</td>
+                        <td class="font-medium text-slate-900">₹{{ plan.price }}</td>
+                        <td>
+                            <span class="status-badge" [class.active]="plan.is_active"
+                                [class.disabled]="!plan.is_active">
+                                {{ plan.is_active ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button class="btn-icon" (click)="openEditModal(plan)" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon delete" (click)="deletePlan(plan)" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>{{ isEditing ? 'Edit Plan' : 'Create New Plan' }}</h3>
+            <button class="close-btn" (click)="closeModal()">&times;</button>
+        </div>
+        <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Plan Name</label>
+                    <input type="text" formControlName="name" class="form-control" placeholder="e.g. Standard Plan">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Type</label>
+                        <select formControlName="plan_type" class="form-control">
+                            <option value="PRO">Pro</option>
+                            <option value="ENT">Enterprise</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" formControlName="price" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Duration (Months)</label>
+                        <input type="number" formControlName="duration_months" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Max Users</label>
+                        <input type="number" formControlName="max_users" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="isActive" formControlName="is_active">
+                    <label for="isActive">Active Plan</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" (click)="closeModal()">Cancel</button>
+                <button type="submit" class="btn-primary" [disabled]="planForm.invalid">
+                    {{ isEditing ? 'Update Plan' : 'Create Plan' }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

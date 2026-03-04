@@ -1,0 +1,106 @@
+<div class="dashboard-home">
+    <div class="page-header">
+        <h1>Platform Overview</h1>
+        <div class="date-selector">
+            <span>Real-time Stats</span>
+            <i class="fa fa-sync-alt" [class.fa-spin]="loading" (click)="fetchAnalytics()"></i>
+        </div>
+    </div>
+
+    <div class="stats-grid" *ngIf="stats">
+        <div class="stat-card">
+            <div class="stat-icon revenue">
+                <i class="fa fa-dollar-sign"></i>
+            </div>
+            <div class="stat-info">
+                <span class="label">Total Revenue</span>
+                <span class="value">₹{{ stats.total_revenue | number:'1.0-0' }}</span>
+                <span class="label text-xs mt-1">₹{{ stats.monthly_revenue | number:'1.0-0' }} this month</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon companies">
+                <i class="fa fa-building"></i>
+            </div>
+            <div class="stat-info">
+                <span class="label">Total Organisations</span>
+                <span class="value">{{ stats.total_organisations }}</span>
+                <span class="label text-xs mt-1">{{ stats.new_organisations_last_30_days }} new in last 30 days</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon subscription">
+                <i class="fa fa-credit-card"></i>
+            </div>
+            <div class="stat-info">
+                <span class="label">Subscribed Organisations</span>
+                <span class="value">{{ stats.active_subscriptions }}</span>
+                <span class="label text-xs mt-1">Active paid plans</span>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon users">
+                <i class="fa fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <span class="label">Total Users</span>
+                <span class="value">{{ stats.total_users }}</span>
+                <span class="label text-xs mt-1">Platform-wide members</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-sections" *ngIf="stats">
+        <div class="section-card chart-section">
+            <div class="card-header">
+                <h3>Recent Support Tickets</h3>
+                <a routerLink="/admin/support">View All</a>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item" *ngFor="let ticket of stats.recent_tickets">
+                    <div class="activity-icon warning"
+                        [ngClass]="{'success': ticket.status === 'RESOLVED', 'danger': ticket.status === 'OPEN'}">
+                        <i class="fa fa-ticket-alt"></i>
+                    </div>
+                    <div class="activity-details">
+                        <span class="text">{{ ticket.subject }}</span>
+                        <span class="sub-text">{{ ticket.org_name }} • {{ ticket.priority }}</span>
+                    </div>
+                </div>
+                <div *ngIf="!stats.recent_tickets || stats.recent_tickets.length === 0"
+                    class="text-muted text-center py-4">
+                    No recent tickets.
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card recent-activity">
+            <div class="card-header">
+                <h3>Recent Signups</h3>
+                <a routerLink="/admin/organisations">View All</a>
+            </div>
+            <div class="activity-list">
+                <div class="activity-item" *ngFor="let org of stats.recent_organisations">
+                    <div class="activity-icon info">
+                        <i class="fa fa-plus"></i>
+                    </div>
+                    <div class="activity-details">
+                        <span class="text">{{ org.name }} joined the platform</span>
+                        <span class="time">{{ org.created_at | date:'mediumDate' }}</span>
+                    </div>
+                </div>
+                <div *ngIf="stats.recent_organisations.length === 0" class="text-muted text-center py-4">
+                    No recent signups.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading-overlay" *ngIf="loading && !stats">
+        <i class="fas fa-spinner fa-spin fa-3x"></i>
+        <p>Gathering platform metrics...</p>
+    </div>
+</div>

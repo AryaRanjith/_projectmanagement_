@@ -1,0 +1,110 @@
+<div class="admin-container">
+    <div class="page-header">
+        <div class="header-left">
+            <h1>Organisations</h1>
+        </div>
+        <div class="header-actions">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" (input)="onSearch($event)" placeholder="Search organisations...">
+            </div>
+            <div class="status-filters">
+                <button class="filter-btn" [class.active]="filterStatus === 'all'"
+                    (click)="setFilter('all')">All</button>
+                <button class="filter-btn" [class.active]="filterStatus === 'active'"
+                    (click)="setFilter('active')">Active</button>
+                <button class="filter-btn" [class.active]="filterStatus === 'disabled'"
+                    (click)="setFilter('disabled')">Disabled</button>
+            </div>
+            <!-- Removed Create Button and Modal as per request -->
+        </div>
+    </div>
+
+    <!-- Toasts -->
+    <div class="toast-container" *ngIf="successMessage || errorMessage">
+        <div class="toast success" *ngIf="successMessage">
+            <i class="fas fa-check-circle"></i> {{ successMessage }}
+        </div>
+        <div class="toast error" *ngIf="errorMessage">
+            <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+        </div>
+    </div>
+
+    <!-- Table -->
+    <div class="content-card">
+        <div class="table-responsive">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Organisation</th>
+                        <th>Owner</th>
+                        <th>Status</th>
+                        <th>Plan Details</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="loading && organisations.length === 0">
+                        <td colspan="5" class="text-center" style="padding: 3rem;">
+                            <i class="fas fa-spinner fa-spin fa-2x" style="color: #6366f1;"></i>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!loading && filteredOrganisations.length === 0">
+                        <td colspan="5" class="text-center" style="padding: 4rem; color: #64748b; background: #fafafa;">
+                            <div class="empty-state">
+                                <p class="font-bold">No organisations found</p>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let org of filteredOrganisations">
+                        <td>
+                            <div class="org-name">
+                                <div class="org-avatar" *ngIf="!org.logo">
+                                    {{ org.name[0] | uppercase }}
+                                </div>
+                                <img *ngIf="org.logo" [src]="org.logo" alt="Logo" class="org-logo">
+                                <div class="org-info">
+                                    <span class="org-title">{{ org.name }}</span>
+                                    <span class="org-meta" title="Created At">Joined: {{ org.created_at |
+                                        date:'mediumDate' }}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-sm font-medium text-slate-700">{{ org.owner_email }}</div>
+                        </td>
+                        <td>
+                            <span class="status-badge" [class.active]="org.is_active" [class.disabled]="!org.is_active">
+                                {{ org.is_active ? 'Active' : 'Disabled' }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="plan-info">
+                                <span class="plan-name">{{ org.subscription_plan }}</span>
+                                <span class="plan-status" [class.Active]="org.subscription_status === 'Active'"
+                                    [class.Inactive]="org.subscription_status !== 'Active'">
+                                    {{ org.subscription_status }}
+                                </span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <select class="status-select" (change)="updateStatus(org, $event)"
+                                    [disabled]="org.updating">
+                                    <option value="" disabled selected>{{ org.updating ? 'Updating...' : 'Status' }}
+                                    </option>
+                                    <option value="enable" [hidden]="org.is_active">Enable</option>
+                                    <option value="disable" [hidden]="!org.is_active">Disable</option>
+                                </select>
+                                <button class="icon-btn delete" (click)="deleteOrganisation(org)"
+                                    title="Delete Organisation">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

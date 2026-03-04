@@ -1,0 +1,98 @@
+<div class="owner-employees">
+    <div class="page-header">
+        <h1>Team</h1>
+        <button class="btn-primary" (click)="openInviteModal()">
+            <i class="fa fa-plus"></i> Add User
+        </button>
+    </div>
+
+    <!-- Loading -->
+    <div class="loading-container" *ngIf="loading">
+        <i class="fa fa-spinner fa-spin fa-2x"></i>
+    </div>
+
+    <!-- Team Members -->
+    <div class="pending-invites" *ngIf="pendingInvitations.length > 0">
+        <h3><i class="fa fa-envelope-open-text"></i> Pending Invitations</h3>
+        <div class="invitations-grid">
+            <div class="invitation-card" *ngFor="let inv of pendingInvitations">
+                <div class="inv-top">
+                    <span class="role-badge" [ngClass]="getRoleBadgeClass(inv.employee_role)">
+                        {{ inv.employee_role }}
+                    </span>
+                    <button class="btn-cancel" (click)="cancelInvitation(inv)" title="Cancel Invitation">
+                        <i class="fa fa-times-circle"></i>
+                    </button>
+                </div>
+                <div class="inv-email">{{ inv.email }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="team-list" *ngIf="!loading">
+        <div class="team-header">
+            <div class="header-main">
+                <a routerLink="/owner" class="btn-back"><i class="fa fa-arrow-left"></i> Back</a>
+                <h3><i class="fa fa-users"></i> Team Members</h3>
+            </div>
+        </div>
+
+        <div class="members-grid" *ngIf="employees.length > 0">
+            <div class="member-card" *ngFor="let emp of employees" [class.inactive]="!emp.is_active_employee">
+                <div class="emp-avatar">
+                    <span class="avatar-initial">{{ emp.first_name?.charAt(0) || emp.username?.charAt(0) || '?'
+                        }}</span>
+                </div>
+                <div class="profile-info">
+                    <h4 class="member-name">{{ emp.first_name || emp.username }} {{ emp.last_name || '' }}</h4>
+                    <span class="member-role">staff</span>
+                    <div class="status-info">
+                        <span class="dot" [class.active]="emp.is_active_employee"></span>
+                        <span class="text">{{ emp.is_active_employee ? 'Active' : 'Inactive' }}</span>
+                    </div>
+                </div>
+                <!-- Action toggle (hidden or refined for clean look) -->
+                <button class="card-action-btn" (click)="toggleEmployee(emp)"
+                    [title]="emp.is_active_employee ? 'Disable Account' : 'Enable Account'">
+                    <i class="fa" [ngClass]="emp.is_active_employee ? 'fa-user-slash' : 'fa-user-check'"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="empty-state" *ngIf="employees.length === 0">
+            <i class="fa fa-users"></i>
+            <h4>No team members yet</h4>
+            <p>Ready to collaborate? Invite your first user.</p>
+        </div>
+    </div>
+
+    <!-- Invite Modal -->
+    <div class="modal-overlay" *ngIf="showInviteModal" (click)="closeInviteModal()">
+        <div class="modal-content" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h2>Invite Employee</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" [(ngModel)]="inviteEmail" placeholder="employee@company.com">
+                </div>
+                <div class="form-group" *ngIf="false">
+                    <label>Role</label>
+                    <select [(ngModel)]="inviteRole">
+                        <option value="ASSIGNEE">Assignee</option>
+                    </select>
+                </div>
+                <div class="error-message" *ngIf="inviteError">{{ inviteError }}</div>
+                <div class="success-message" *ngIf="inviteSuccess">{{ inviteSuccess }}</div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" (click)="closeInviteModal()">Cancel</button>
+                <button class="btn-primary" (click)="sendInvite()" [disabled]="inviting">
+                    <i class="fa fa-spinner fa-spin" *ngIf="inviting"></i>
+                    {{ inviting ? 'Sending...' : 'Send Invitation' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div class="owner-sidebar" [class.collapsed]="isCollapsed">
+    <!-- Brand Section -->
+    <div class="sidebar-brand">
+        <div class="brand-logo initials">
+            {{ orgName.charAt(0).toUpperCase() }}
+        </div>
+        <div class="brand-info" *ngIf="!isCollapsed">
+            <h3>{{ orgName }}</h3>
+        </div>
+    </div>
+
+    <div class="sidebar-content">
+        <!-- Main Menu -->
+        <nav class="sidebar-nav">
+            <a routerLink="/owner/dashboard" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-th-large"></i>
+                <span *ngIf="!isCollapsed">Dashboard</span>
+            </a>
+            <a routerLink="/owner/projects" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-folder-open"></i>
+                <span *ngIf="!isCollapsed">Project List</span>
+            </a>
+            <a routerLink="/owner/employees" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-users"></i>
+                <span *ngIf="!isCollapsed">Team</span>
+            </a>
+            <a routerLink="/owner/tasks" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-tasks"></i>
+                <span *ngIf="!isCollapsed">Task Assign</span>
+            </a>
+            <a routerLink="/owner/tracker" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-line-chart"></i>
+                <span *ngIf="!isCollapsed">Track Task</span>
+            </a>
+            <a routerLink="/owner/support" routerLinkActive="active" class="nav-link">
+                <i class="fa fa-headset"></i>
+                <span *ngIf="!isCollapsed">Support</span>
+            </a>
+        </nav>
+
+
+        <!-- Projects Section -->
+        <div class="sidebar-section" *ngIf="!isCollapsed">
+            <div class="section-header">
+                <span>PROJECTS</span>
+                <i class="fa fa-arrow-right"></i>
+            </div>
+
+            <div class="project-items">
+                <div class="project-group" *ngFor="let project of projects">
+                    <div class="project-header" [class.expanded]="isProjectExpanded(project.id)"
+                        (click)="toggleProject(project.id, $event)">
+                        <span class="project-bullet"></span>
+                        <span class="project-name">{{ project.name }}</span>
+                    </div>
+
+                    <div class="project-sub-menu" *ngIf="isProjectExpanded(project.id)">
+                        <a [routerLink]="['/owner/projects', project.id, 'tasks']" routerLinkActive="active"
+                            class="sub-link">
+                            <i class="fa fa-tasks"></i> Tasks
+                        </a>
+                        <a [routerLink]="['/owner/projects', project.id, 'analytics']" routerLinkActive="active"
+                            class="sub-link">
+                            <i class="fa fa-chart-line"></i> Analytics
+                        </a>
+                        <a [routerLink]="['/owner/projects', project.id, 'calendar']" routerLinkActive="active"
+                            class="sub-link">
+                            <i class="fa fa-calendar-alt"></i> Calendar
+                        </a>
+                        <a [routerLink]="['/owner/projects', project.id, 'settings']" routerLinkActive="active"
+                            class="sub-link">
+                            <i class="fa fa-cog"></i> Settings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer" (click)="isCollapsed = !isCollapsed">
+        <i class="fa" [class.fa-angle-left]="!isCollapsed" [class.fa-angle-right]="isCollapsed"></i>
+    </div>
+</div>

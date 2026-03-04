@@ -1,0 +1,102 @@
+<div class="support-container">
+    <div class="page-header">
+        <div class="header-left">
+            <h1>Support Tickets</h1>
+            <p>Get help from our platform administrators</p>
+        </div>
+        <button class="btn-primary" (click)="showCreateModal = true">
+            <i class="fa fa-plus"></i> New Ticket
+        </button>
+    </div>
+
+    <div class="alert-success" *ngIf="successMessage">
+        <i class="fa fa-check-circle"></i> {{ successMessage }}
+    </div>
+    <div class="alert-error" *ngIf="errorMessage">
+        <i class="fa fa-exclamation-circle"></i> {{ errorMessage }}
+    </div>
+
+    <!-- Tickets List -->
+    <div class="tickets-card">
+        <div class="card-loader" *ngIf="loading">
+            <i class="fas fa-spinner fa-spin"></i>
+        </div>
+
+        <table class="tickets-table" *ngIf="!loading && tickets.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Subject</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Last Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let ticket of tickets">
+                    <td class="id-cell">#{{ ticket.id }}</td>
+                    <td class="subject-cell">
+                        <span class="subject-text">{{ ticket.subject }}</span>
+                        <p class="desc-preview">{{ ticket.description | slice:0:60 }}...</p>
+                    </td>
+                    <td>
+                        <span class="priority-badge" [class]="ticket.priority.toLowerCase()">
+                            {{ ticket.priority }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="status-badge" [ngClass]="getStatusClass(ticket.status)">
+                            {{ ticket.status | titlecase }}
+                        </span>
+                    </td>
+                    <td>{{ ticket.created_at | date:'mediumDate' }}</td>
+                    <td>{{ ticket.updated_at | date:'short' }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="empty-state" *ngIf="!loading && tickets.length === 0">
+            <i class="fa fa-ticket-alt"></i>
+            <h3>No tickets found</h3>
+            <p>You haven't submitted any support tickets yet.</p>
+            <button class="btn-outline" (click)="showCreateModal = true">Create your first ticket</button>
+        </div>
+    </div>
+
+    <!-- Create Modal -->
+    <div class="modal-overlay" *ngIf="showCreateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Submit New Ticket</h2>
+                <button class="close-btn" (click)="showCreateModal = false">&times;</button>
+            </div>
+            <form (ngSubmit)="onSubmitTicket()">
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" [(ngModel)]="newTicket.subject" name="subject"
+                        placeholder="Describe your issue briefly" required>
+                </div>
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select [(ngModel)]="newTicket.priority" name="priority">
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea [(ngModel)]="newTicket.description" name="description" rows="5"
+                        placeholder="Provide more details about the problem..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-text" (click)="showCreateModal = false">Cancel</button>
+                    <button type="submit" class="btn-primary" [disabled]="!newTicket.subject || !newTicket.description">
+                        Submit Ticket
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

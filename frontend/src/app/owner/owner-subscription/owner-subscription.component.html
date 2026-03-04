@@ -1,0 +1,74 @@
+<div class="owner-subscription">
+    <div class="page-header">
+        <h1>Subscription</h1>
+    </div>
+
+    <div class="loading-container" *ngIf="loading">
+        <i class="fa fa-spinner fa-spin fa-2x"></i>
+    </div>
+
+    <!-- Current Subscription -->
+    <div class="current-plan" *ngIf="subscription?.has_subscription">
+        <div class="plan-badge">
+            <i class="fa fa-crown"></i>
+            <span>Current Plan</span>
+        </div>
+        <h2>{{ subscription.plan_name }}</h2>
+        <div class="plan-details">
+            <div class="detail">
+                <span class="label">Status</span>
+                <span class="value" [class.active]="subscription.is_active">
+                    {{ subscription.is_active ? 'Active' : 'Inactive' }}
+                </span>
+            </div>
+            <div class="detail">
+                <span class="label">Expires</span>
+                <span class="value">{{ subscription.end_date | date:'longDate' }}</span>
+            </div>
+            <div class="detail">
+                <span class="label">Days Remaining</span>
+                <span class="value">{{ subscription.days_remaining }}</span>
+            </div>
+            <div class="detail">
+                <span class="label">Max Users</span>
+                <span class="value">{{ subscription.max_users }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="no-subscription" *ngIf="!loading && !subscription?.has_subscription">
+        <i class="fa fa-crown"></i>
+        <h3>No Active Subscription</h3>
+        <p>Choose a plan below to unlock all features</p>
+    </div>
+
+    <!-- Available Plans -->
+    <h3 class="section-title">Available Plans</h3>
+    <div class="plans-grid" *ngIf="plans.length > 0">
+        <div class="plan-card" *ngFor="let plan of plans" [class.current]="isCurrentPlan(plan)"
+            [class.featured]="plan.plan_type === 'PROFESSIONAL'">
+            <div class="featured-badge" *ngIf="plan.plan_type === 'PROFESSIONAL'">Most Popular</div>
+            <h3>{{ plan.name }}</h3>
+            <div class="price">
+                <span class="amount">₹{{ plan.price }}</span>
+                <span class="period">/month</span>
+            </div>
+            <ul class="features">
+                <li><i class="fa fa-check"></i> Up to {{ plan.max_users }} users</li>
+                <li><i class="fa fa-check"></i> {{ plan.max_projects || 'Unlimited' }} projects</li>
+                <li *ngFor="let feature of plan.features">
+                    <i class="fa fa-check"></i> {{ feature }}
+                </li>
+            </ul>
+            <button class="btn-plan" [class.current]="isCurrentPlan(plan)"
+                [disabled]="isCurrentPlan(plan) || processingPlan === plan.id" (click)="subscribeToPlan(plan)">
+                <i class="fa fa-spinner fa-spin" *ngIf="processingPlan === plan.id"></i>
+                {{ isCurrentPlan(plan) ? 'Current Plan' : 'Select Plan' }}
+            </button>
+        </div>
+    </div>
+
+    <div class="no-plans" *ngIf="!loading && plans.length === 0">
+        <p>No subscription plans are available at the moment. Please check back later.</p>
+    </div>
+</div>

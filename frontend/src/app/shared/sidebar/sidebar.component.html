@@ -1,0 +1,23 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-header">
+        <h2 *ngIf="!isCollapsed">{{ title }}</h2>
+        <button class="toggle-btn" (click)="toggleSidebar()">
+            <i class="fa fa-bars"></i>
+        </button>
+    </div>
+
+    <div class="nav-menu">
+        <div class="nav-item" *ngFor="let item of menuItems" [class.active]="router.isActive(item.route, false)"
+            (click)="router.navigate([item.route])">
+            <i class="nav-icon">{{ item.icon }}</i>
+            <span class="nav-label">{{ item.label }}</span>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="footer-item" (click)="toggleSidebar()">
+            <i class="fa {{ isCollapsed ? 'fa-angle-right' : 'fa-angle-left' }}"></i>
+            <span class="nav-label">Collapse Sidebar</span>
+        </div>
+    </div>
+</div>

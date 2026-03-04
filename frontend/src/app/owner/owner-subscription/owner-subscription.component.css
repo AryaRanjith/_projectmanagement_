@@ -1,0 +1,245 @@
+.owner-subscription {
+    padding: 32px 40px;
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+/* Header */
+.page-header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1e1b4b;
+    margin: 0;
+    letter-spacing: -1px;
+}
+
+/* Current Plan Card */
+.current-plan {
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+    border-radius: 24px;
+    padding: 32px;
+    color: white;
+    margin-bottom: 48px;
+    box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.plan-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.current-plan h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 24px;
+}
+
+.plan-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 24px;
+}
+
+.detail {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail .label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    text-transform: uppercase;
+}
+
+.detail .value {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.detail .value.active {
+    color: #4ade80;
+}
+
+/* Sections */
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e1b4b;
+    margin-bottom: 24px;
+}
+
+/* Plans Grid */
+.plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 32px;
+}
+
+.plan-card {
+    background: white;
+    border: 1px solid #f1f5f9;
+    border-radius: 24px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.plan-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+    border-color: #e2e8f0;
+}
+
+.plan-card.featured {
+    border: 2px solid #6366f1;
+    background: #fdfcff;
+}
+
+.featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #6366f1;
+    color: white;
+    padding: 4px 16px;
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.plan-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1e1b4b;
+    margin: 0 0 16px;
+}
+
+.price {
+    margin-bottom: 32px;
+}
+
+.price .amount {
+    font-size: 48px;
+    font-weight: 800;
+    color: #1e1b4b;
+}
+
+.price .period {
+    color: #64748b;
+    font-size: 16px;
+    font-weight: 500;
+    margin-left: 4px;
+}
+
+.features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.features li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #475569;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.features li i {
+    color: #10b981;
+    font-size: 14px;
+}
+
+/* Buttons */
+.btn-plan {
+    width: 100%;
+    padding: 14px;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    background: white;
+    color: #6366f1;
+    font-weight: 700;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: auto;
+}
+
+.btn-plan:not(.current):hover {
+    background: #f5f3ff;
+    border-color: #6366f1;
+}
+
+.plan-card.featured .btn-plan {
+    background: #6366f1;
+    color: white;
+    border: none;
+    box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.2);
+}
+
+.plan-card.featured .btn-plan:hover {
+    background: #4f46e5;
+    transform: none;
+}
+
+.btn-plan.current {
+    background: #f1f5f9;
+    color: #94a3b8;
+    border: none;
+    cursor: default;
+}
+
+/* States */
+.loading-container {
+    padding: 100px;
+    text-align: center;
+    color: #6366f1;
+}
+
+.no-plans,
+.no-subscription {
+    text-align: center;
+    padding: 60px 40px;
+    background: #f8fafc;
+    border-radius: 24px;
+    border: 1px dashed #e2e8f0;
+    color: #64748b;
+}
+
+.no-subscription i {
+    font-size: 40px;
+    color: #cbd5e1;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.no-subscription h3 {
+    color: #1e1b4b;
+    margin-bottom: 8px;
+}

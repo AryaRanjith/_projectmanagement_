@@ -1,0 +1,34 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+    <div class="sidebar-wrapper">
+        <div class="nav-menu">
+            <div class="nav-item-group" *ngFor="let item of menuItems">
+
+                <div class="nav-item" [class.active]="router.isActive(item.route, false)"
+                    (click)="item.children ? toggleSubmenu(item.label) : navigateTo(item.route)">
+
+                    <i class="fa {{ item.icon }} nav-icon"></i>
+                    <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
+
+                    <i class="fa fa-chevron-right arrow-icon" *ngIf="item.children && !isCollapsed"
+                        [class.rotated]="isExpanded(item.label)">
+                    </i>
+                </div>
+
+                <div class="submenu" *ngIf="item.children && isExpanded(item.label) && !isCollapsed">
+                    <div class="submenu-item" *ngFor="let child of item.children" (click)="navigateTo(child.route)"
+                        [class.active]="router.isActive(child.route, true)">
+                        <i class="fa {{ child.icon }} submenu-icon"></i>
+                        <span>{{ child.label }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="footer-item" (click)="toggleCollapse()">
+            <i class="fa {{ isCollapsed ? 'fa-angle-right' : 'fa-angle-left' }}"></i>
+            <span *ngIf="!isCollapsed">Collapse Sidebar</span>
+        </div>
+    </div>
+</div>

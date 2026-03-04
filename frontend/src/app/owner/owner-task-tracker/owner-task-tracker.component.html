@@ -1,0 +1,270 @@
+<div class="tasks-premium-page">
+    <!-- Premium Header -->
+    <div class="premium-header">
+        <div class="header-left">
+            <button class="btn-back-owner" (click)="filterProject = ''; loadTasks()">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <div class="project-title-area">
+                <h1>
+                    {{ getSelectedProjectName() }}
+                    <span class="status-pill" [ngClass]="getSelectedProjectStatus().toLowerCase()">{{
+                        getSelectedProjectStatus() }}</span>
+                </h1>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-grid">
+        <div class="premium-stat-card">
+            <div class="stat-content">
+                <span class="label">Total Tasks</span>
+                <span class="value">{{ stats.total }}</span>
+            </div>
+            <div class="stat-icon-wrapper"><i class="fa fa-tasks"></i></div>
+        </div>
+        <div class="premium-stat-card success">
+            <div class="stat-content">
+                <span class="label">Completed</span>
+                <span class="value">{{ stats.completed }}</span>
+            </div>
+            <div class="stat-icon-wrapper"><i class="fa fa-check-circle"></i></div>
+        </div>
+        <div class="premium-stat-card warning">
+            <div class="stat-content">
+                <span class="label">In Progress</span>
+                <span class="value">{{ stats.inProgress }}</span>
+            </div>
+            <div class="stat-icon-wrapper"><i class="fa fa-history"></i></div>
+        </div>
+        <div class="premium-stat-card info">
+            <div class="stat-content">
+                <span class="label">Team Members</span>
+                <span class="value">{{ stats.teamMembers }}</span>
+            </div>
+            <div class="stat-icon-wrapper"><i class="fa fa-users"></i></div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="premium-tabs">
+        <button class="tab-link" [class.active]="activeTab === 'tasks'" (click)="activeTab = 'tasks'">
+            <i class="fa fa-link"></i> Tasks
+        </button>
+        <button class="tab-link" [class.active]="activeTab === 'calendar'" (click)="activeTab = 'calendar'">
+            <i class="fa fa-calendar-alt"></i> Calendar
+        </button>
+        <button class="tab-link" [class.active]="activeTab === 'analytics'" (click)="activeTab = 'analytics'">
+            <i class="fa fa-chart-line"></i> Analytics
+        </button>
+        <button class="tab-link" [class.active]="activeTab === 'settings'" (click)="activeTab = 'settings'">
+            <i class="fa fa-cog"></i> Settings
+        </button>
+    </div>
+
+    <!-- Filters & View Toggle -->
+    <div class="premium-controls" *ngIf="activeTab === 'tasks'">
+        <div class="filter-group">
+            <select class="premium-select" [(ngModel)]="filterStatus" (change)="loadTasks()">
+                <option value="">All Statuses</option>
+                <option *ngFor="let s of statusOptions" [value]="s">{{ s }}</option>
+            </select>
+            <select class="premium-select" [(ngModel)]="filterProject" (change)="loadTasks()">
+                <option value="">All Projects</option>
+                <option *ngFor="let p of projects" [value]="p.id">{{ p.name }}</option>
+            </select>
+            <select class="premium-select" [(ngModel)]="filterPriority" (change)="loadTasks()">
+                <option value="">All Priorities</option>
+                <option *ngFor="let p of priorityOptions" [value]="p">{{ p }}</option>
+            </select>
+            <select class="premium-select" [(ngModel)]="filterAssignee" (change)="loadTasks()">
+                <option value="">All Assignees</option>
+                <option *ngFor="let a of assignees" [value]="a.id">{{ a.first_name }} {{ a.last_name }} ({{ a.username
+                    }})</option>
+            </select>
+        </div>
+
+        <!-- View Switch Removed as per request "only first one enough" -->
+    </div>
+
+    <!-- Content Area -->
+    <div class="premium-content">
+        <div class="loading-overlay" *ngIf="loading">
+            <i class="fa fa-spinner fa-spin fa-2x"></i>
+        </div>
+
+        <!-- Table View (Default and Only View) -->
+        <div class="premium-table-container" *ngIf="!loading && activeTab === 'tasks'">
+            <table class="premium-data-table">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-cog"></i> TITLE</th>
+                        <th>TYPE</th>
+                        <th>PRIORITY</th>
+                        <th>STATUS</th>
+                        <th>PROGRESS</th>
+                        <th>ASSIGNEE</th>
+                        <th>DUE DATE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let task of tasks">
+                        <td class="task-title-cell">
+                            <span class="status-dot" [ngClass]="getStatusClass(task.status)"></span>
+                            {{ task.title }}
+                        </td>
+                        <td>
+                            <div class="type-tag" [ngClass]="getTaskTypeClass(task.task_type)">
+                                <i class="fa" [ngClass]="getTaskTypeIcon(task.task_type)"></i>
+                                {{ task.task_type || 'TASK' }}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="priority-badge" [ngClass]="getPriorityClass(task.priority)">
+                                {{ task.priority }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="status-badge" [ngClass]="task.status.toLowerCase()">
+                                {{ task.status }}
+                            </div>
+                        </td>
+                        <td>
+                            <div class="progress-cell">
+                                <div class="progress-bar-mini">
+                                    <div class="fill" [style.width.%]="task.progress || 0"></div>
+                                </div>
+                                <span class="progress-text">{{ task.progress || 0 }}%</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="owner-assignee">
+                                <div class="avatar-circle">{{ task.assignee_name?.charAt(0) || 'U' }}</div>
+                                <span>{{ task.assignee_name || 'Unassigned' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="due-date-cell">
+                                <i class="fa fa-calendar-o"></i>
+                                <span>{{ task.due_date | date:'d MMMM' }}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Calendar Tab -->
+        <div class="calendar-container" *ngIf="!loading && activeTab === 'calendar'">
+            <div class="calendar-header">
+                <button class="btn-cal-nav" (click)="changeMonth(-1)"><i class="fa fa-chevron-left"></i></button>
+                <h3>{{ currentMonth | date:'MMMM yyyy' }}</h3>
+                <button class="btn-cal-nav" (click)="changeMonth(1)"><i class="fa fa-chevron-right"></i></button>
+            </div>
+
+            <div class="calendar-grid">
+                <div class="cal-day-head" *ngFor="let d of weekDays">{{ d }}</div>
+
+                <div class="cal-day" *ngFor="let day of calendarDays" (click)="selectDate(day)">
+                    <span class="day-num" *ngIf="day.day">{{ day.day }}</span>
+                    <div *ngIf="day.day && day.hasDeadline">
+                        <span class="deadline-dot" *ngFor="let t of day.tasks" [title]="t.title"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="selected-date-tasks" *ngIf="selectedDateTasks.length > 0">
+                <h4>Due on selected date:</h4>
+                <div class="task-item" *ngFor="let t of selectedDateTasks">
+                    <span>{{ t.title }}</span>
+                    <span class="status-badge" [ngClass]="t.status.toLowerCase()">{{ t.status }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="analytics-container" *ngIf="!loading && activeTab === 'analytics'">
+            <div class="analytics-grid">
+                <!-- Status Bars -->
+                <div class="analytics-card">
+                    <h3>Tasks by Status</h3>
+                    <div class="stat-bar-row" *ngFor="let item of statusOptions">
+                        <div class="stat-label">
+                            <span>{{ item }}</span>
+                            <span>{{ analytics.byStatus[item] || 0 }}</span>
+                        </div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill" [style.width.%]="analytics.avgProgressStatus[item] || 0"
+                                [style.background-color]="getColor(item, 'status')"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Priority Bars -->
+                <div class="analytics-card">
+                    <h3>Tasks by Priority</h3>
+                    <div class="stat-bar-row" *ngFor="let item of priorityOptions">
+                        <div class="stat-label">
+                            <span>{{ item }}</span>
+                            <span>{{ analytics.byPriority[item] || 0 }}</span>
+                        </div>
+                        <div class="stat-bar-bg">
+                            <div class="stat-bar-fill" [style.width.%]="analytics.avgProgressPriority[item] || 0"
+                                [style.background-color]="getColor(item, 'priority')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings (Manage Tasks) Tab -->
+        <div class="settings-container" *ngIf="!loading && activeTab === 'settings'">
+
+            <div class="task-selection" *ngIf="!editingTask">
+                <h3>Select Task to Edit</h3>
+                <div class="tasks-list">
+                    <div class="task-item" *ngFor="let t of tasks">
+                        <h4>{{ t.title }}</h4>
+                        <button class="btn-edit" (click)="editTask(t)">Edit</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-edit-form" *ngIf="editingTask">
+                <h3>Edit Task: {{ editingTask.title }}</h3>
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" class="form-control" [(ngModel)]="editingTask.title">
+                </div>
+
+                <div class="form-group">
+                    <label>Due Date</label>
+                    <input type="date" class="form-control" [(ngModel)]="editingTask.due_date">
+                </div>
+
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select class="form-control" [(ngModel)]="editingTask.priority">
+                        <option *ngFor="let p of priorityOptions" [value]="p">{{ p }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Assignee</label>
+                    <select class="form-control" [(ngModel)]="editingTask.assignee">
+                        <option *ngFor="let a of assignees" [value]="a.id">{{ a.first_name }} {{ a.username }}</option>
+                    </select>
+                </div>
+
+                <div class="actions">
+                    <button class="btn-primary" (click)="saveTask()">Save Changes</button>
+                    <button class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+                </div>
+                <p class="success-msg" *ngIf="successMessage" style="color: green; margin-top: 10px;">{{ successMessage
+                    }}</p>
+            </div>
+        </div>
+    </div>
+</div>

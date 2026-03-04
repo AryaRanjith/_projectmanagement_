@@ -1,0 +1,275 @@
+.analytics-container {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    background: #f8fafc;
+    min-height: calc(100vh - 64px);
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.subtitle {
+    color: #64748b;
+    margin: 4px 0 0 0;
+}
+
+.refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #6366f1;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refresh-btn:hover:not(:disabled) {
+    background: #f1f5f9;
+    border-color: #cbd5e1;
+}
+
+.overview-grid {
+    display: gap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.metric-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.metric-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.metric-icon.revenue {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.metric-icon.signups {
+    background: #eff6ff;
+    color: #3b82f6;
+}
+
+.metric-icon.growth {
+    background: #fef2f2;
+    color: #ef4444;
+}
+
+.metric-details .label {
+    display: block;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.metric-details .value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.chart-header {
+    padding: 20px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #1e293b;
+}
+
+.chart-badge {
+    padding: 4px 10px;
+    background: #f1f5f9;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.chart-body {
+    padding: 30px 20px 20px 20px;
+    height: 300px;
+}
+
+.simple-bar-chart {
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 25px;
+    position: relative;
+}
+
+.bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    height: 100%;
+}
+
+.bar-wrapper {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+}
+
+.bar {
+    width: 70%;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    transition: height 0.6s ease-out;
+}
+
+.revenue-bar {
+    background: linear-gradient(to top, #10b981, #34d399);
+}
+
+.signup-bar {
+    background: linear-gradient(to top, #3b82f6, #60a5fa);
+}
+
+.bar-value {
+    position: absolute;
+    top: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: #64748b;
+    white-space: nowrap;
+}
+
+.bar-label {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.insights-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+.insight-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.health-metrics {
+    display: flex;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.health-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.health-label {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.health-value {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.text-danger {
+    color: #ef4444;
+}
+
+.text-success {
+    color: #10b981;
+}
+
+.loading-overlay {
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px;
+    border-radius: 12px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #6366f1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 16px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

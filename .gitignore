@@ -1,0 +1,73 @@
+# Virtual Environment
+env/
+venv/
+ENV/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Django
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+media/
+
+# Javascript / Angular
+node_modules/
+/dist/
+/.angular/
+/.vscode/
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+backend/settings.py
+# Environment
+.env
+
+# SQLite databases
+db.sqlite3
+*.sqlite3
+
+# Tenant DB folder
+tenants/
+
+# Python cache
+__pycache__/
+
+FIX_SUMMARY_*.md
+LOGIN_*.md
+LOGIN_*.html
+ORGANISATION_*.md
+ORGANIZATION_*.md
+SESSION_SUMMARY.md
+TEST_LOGIN.html
+backend/ml_engine

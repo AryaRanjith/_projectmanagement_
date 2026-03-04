@@ -1,0 +1,248 @@
+<div class="project-details" *ngIf="project && !loading">
+    <!-- Header -->
+    <div class="details-header">
+        <div class="header-left">
+            <button class="btn-back" (click)="router.navigate(['/owner/projects'])">
+                <i class="fa fa-arrow-left"></i>
+            </button>
+            <div class="project-selector-wrapper">
+                <h1 (click)="showProjectList = !showProjectList">
+                    {{ project.name }}
+                    <i class="fa fa-chevron-down"></i>
+                </h1>
+                <span class="status-badge" [ngClass]="project.status?.toLowerCase()">{{ project.status }}</span>
+
+                <div class="project-dropdown" *ngIf="showProjectList">
+                    <div class="dropdown-item" *ngFor="let p of allProjects" (click)="selectProject(p)">
+                        {{ p.name }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="btn-ai" (click)="suggestAITasks()" [disabled]="aiLoading">
+                <i class="fa" [ngClass]="aiLoading ? 'fa-spinner fa-spin' : 'fa-magic'"></i> AI Suggest Tasks
+            </button>
+            <button class="btn-primary" (click)="openCreateModal()">
+                <i class="fa fa-plus"></i> New Task
+            </button>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-info">
+                <span class="stat-label">Total Tasks</span>
+                <span class="stat-value">{{ stats.total }}</span>
+            </div>
+            <i class="fa fa-tasks stat-icon"></i>
+        </div>
+        <div class="stat-card success">
+            <div class="stat-info">
+                <span class="stat-label">Completed</span>
+                <span class="stat-value">{{ stats.completed }}</span>
+            </div>
+            <i class="fa fa-check-circle stat-icon"></i>
+        </div>
+        <div class="stat-card warning">
+            <div class="stat-info">
+                <span class="stat-label">In Progress</span>
+                <span class="stat-value">{{ stats.inProgress }}</span>
+            </div>
+            <i class="fa fa-history stat-icon"></i>
+        </div>
+        <div class="stat-card info">
+            <div class="stat-info">
+                <span class="stat-label">Team Members</span>
+                <span class="stat-value">{{ stats.teamMembers }}</span>
+            </div>
+            <i class="fa fa-users stat-icon"></i>
+        </div>
+    </div>
+
+    <!-- AI Insights Card -->
+    <div class="ai-insights-card fade-in" *ngIf="aiAnalysis || aiLoading">
+        <div class="ai-card-header">
+            <div class="ai-title">
+                <i class="fa fa-robot"></i>
+                <span>AI Project Health Check</span>
+            </div>
+            <button class="btn-refresh-ai" (click)="generateAIHealthCheck()" *ngIf="!aiLoading">
+                <i class="fa fa-sync-alt"></i>
+            </button>
+        </div>
+        <div class="ai-card-body">
+            <div class="ai-skeleton" *ngIf="aiLoading">
+                <div class="skeleton-line"></div>
+                <div class="skeleton-line short"></div>
+            </div>
+            <p *ngIf="!aiLoading">{{ aiAnalysis }}</p>
+        </div>
+    </div>
+
+    <!-- AI Suggestions Modal/Section -->
+    <div class="ai-suggestions-overlay" *ngIf="showAISuggestions" (click)="showAISuggestions = false">
+        <div class="ai-suggestions-content" (click)="$event.stopPropagation()">
+            <div class="ai-modal-header">
+                <h2><i class="fa fa-magic"></i> AI Suggested Tasks</h2>
+                <button class="btn-close" (click)="showAISuggestions = false"><i class="fa fa-times"></i></button>
+            </div>
+            <div class="ai-modal-body">
+                <p>Based on your project description, AI suggests the following tasks:</p>
+                <div class="suggestion-list">
+                    <div class="suggestion-item" *ngFor="let suggestion of aiSuggestions">
+                        <div class="suggestion-info">
+                            <h4>{{ suggestion.title }}</h4>
+                            <p>{{ suggestion.description }}</p>
+                        </div>
+                        <button class="btn-add-suggested"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="ai-modal-footer">
+                <button class="btn-secondary" (click)="showAISuggestions = false">Cancel</button>
+                <button class="btn-ai" (click)="addAllSuggestedTasks()">Add All Tasks</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="tabs-nav">
+        <button class="tab-btn" [class.active]="activeTab === 'tasks'" (click)="activeTab = 'tasks'">
+            <i class="fa fa-link"></i> Tasks
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'calendar'" (click)="activeTab = 'calendar'">
+            <i class="fa fa-calendar-alt"></i> Calendar
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'analytics'" (click)="activeTab = 'analytics'">
+            <i class="fa fa-chart-line"></i> Analytics
+        </button>
+        <button class="tab-btn" [class.active]="activeTab === 'settings'" (click)="activeTab = 'settings'">
+            <i class="fa fa-cog"></i> Settings
+        </button>
+    </div>
+
+    <!-- Filters Bar -->
+    <div class="filters-bar" *ngIf="activeTab === 'tasks'">
+        <select class="filter-select">
+            <option>All Statuses</option>
+        </select>
+        <select class="filter-select">
+            <option>All Types</option>
+        </select>
+        <select class="filter-select">
+            <option>All Priorities</option>
+        </select>
+        <select class="filter-select">
+            <option>All Assignees</option>
+        </select>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-contents">
+        <!-- Tasks Tab -->
+        <div class="table-container" *ngIf="activeTab === 'tasks'">
+            <table class="premium-table">
+                <thead>
+                    <tr>
+                        <th><i class="fa fa-cog"></i> TITLE</th>
+                        <th>TYPE</th>
+                        <th>PRIORITY</th>
+                        <th>STATUS</th>
+                        <th>ASSIGNEE</th>
+                        <th>DUE DATE</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let task of tasks">
+                        <td class="title-cell">
+                            <span class="task-dot" [ngClass]="getTaskStatusClass(task.status)"></span>
+                            {{ task.title }}
+                        </td>
+                        <td>
+                            <div class="type-cell" [ngClass]="getTaskTypeClass(task.task_type)">
+                                <i class="fa" [ngClass]="getTaskTypeIcon(task.task_type)"></i>
+                                <span>{{ task.task_type || 'TASK' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="priority-pill" [ngClass]="getPriorityClass(task.priority)">
+                                {{ task.priority }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="status-display">
+                                <span>{{ task.status }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="assignee-cell">
+                                <div class="avatar-xs">{{ task.assignee_name?.charAt(0) || 'U' }}</div>
+                                <span>{{ task.assignee_name || 'Unassigned' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="date-cell">
+                                <i class="fa fa-calendar"></i>
+                                <span>{{ task.due_date | date:'d MMMM' }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="actions-cell">
+                                <button class="btn-icon" (click)="editTask(task)"><i class="fa fa-edit"></i></button>
+                                <button class="btn-icon danger" (click)="deleteTask(task)"><i
+                                        class="fa fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Calendar Tab -->
+        <div class="calendar-container" *ngIf="activeTab === 'calendar'">
+            <div class="calendar-header">
+                <h2>October 2026</h2>
+                <div class="calendar-controls">
+                    <button class="btn-icon"><i class="fa fa-chevron-left"></i></button>
+                    <button class="btn-icon active">Today</button>
+                    <button class="btn-icon"><i class="fa fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="calendar-grid">
+                <div class="day-header">Mon</div>
+                <div class="day-header">Tue</div>
+                <div class="day-header">Wed</div>
+                <div class="day-header">Thu</div>
+                <div class="day-header">Fri</div>
+                <div class="day-header">Sat</div>
+                <div class="day-header">Sun</div>
+
+                <!-- Simple mock grid -->
+                <div class="calendar-day"
+                    *ngFor="let d of [26,27,28,29,30,31,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29]">
+                    <span class="day-num" [class.muted]="d > 25 && d < 32">{{ d }}</span>
+                    <div class="task-deadline" *ngIf="d === 28">
+                        <span class="dot feature"></span> UI/UX Design
+                    </div>
+                    <div class="task-deadline" *ngIf="d === 30">
+                        <span class="dot task"></span> Android App
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Others -->
+        <div class="placeholder-tab" *ngIf="activeTab === 'analytics' || activeTab === 'settings'">
+            <i class="fa fa-tools"></i>
+            <h3>{{ activeTab | titlecase }} section coming soon</h3>
+        </div>
+    </div>
+</div>
+
+<div class="loading-state" *ngIf="loading">
+    <i class="fa fa-spinner fa-spin"></i>
+    <p>Loading project details...</p>
+</div>

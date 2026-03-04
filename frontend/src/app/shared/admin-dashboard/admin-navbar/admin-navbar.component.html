@@ -1,0 +1,89 @@
+<nav class="admin-navbar">
+    <div class="navbar-left">
+        <button class="menu-toggle" (click)="onToggleSidebar()">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="brand">
+            <!-- <span class="brand-icon">⚡</span> -->
+            <span class="brand-text">ProManage <span class="admin-badge">Admin</span></span>
+        </div>
+    </div>
+
+    <div class="navbar-center">
+        <div class="search-box">
+            <i class="fa fa-search search-icon"></i>
+            <input type="text" [(ngModel)]="searchQuery" (keyup.enter)="onGlobalSearch()"
+                placeholder="Search companies, users, invoices..." />
+        </div>
+    </div>
+
+    <div class="navbar-right">
+        <!-- Notifications -->
+        <div class="nav-item notification-wrapper">
+            <button class="icon-btn" (click)="toggleNotificationsPanel()">
+                <i class="fa fa-bell"></i>
+                <span class="badge" *ngIf="getUnreadCount() > 0">{{ getUnreadCount() }}</span>
+            </button>
+
+            <div class="notification-panel" *ngIf="showNotifications">
+                <div class="panel-header">
+                    <h4>Notifications</h4>
+                    <span class="count">{{ getUnreadCount() }} new</span>
+                </div>
+                <div class="notification-list">
+                    <div class="notification-item" *ngFor="let notif of notifications" [class.unread]="notif.unread"
+                        (click)="markAsRead(notif)">
+                        <div class="notif-icon">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
+                        <div class="notif-content">
+                            <p class="notif-message">{{ notif.message }}</p>
+                            <span class="notif-time">{{ notif.time }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <a href="#">View all notifications</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Dropdown -->
+        <div class="profile-wrapper">
+            <button class="profile-btn" (click)="toggleProfile()">
+                <div class="avatar">
+                    <span>{{ getAdminName().charAt(0).toUpperCase() }}</span>
+                </div>
+                <div class="profile-info">
+                    <span class="profile-name">{{ getAdminName() }}</span>
+                    <span class="profile-role">Platform Admin</span>
+                </div>
+                <i class="fa fa-chevron-down"></i>
+            </button>
+
+            <div class="profile-dropdown" *ngIf="showProfileDropdown">
+                <div class="dropdown-header">
+                    <div class="avatar-lg">
+                        <span>{{ getAdminName().charAt(0).toUpperCase() }}</span>
+                    </div>
+                    <div class="header-info">
+                        <span class="name">{{ getAdminName() }}</span>
+                        <span class="email">{{ authService.getCurrentUser()?.email }}</span>
+                    </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" (click)="navigateToProfile()">
+                        <i class="fa fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item logout" (click)="logout()">
+                    <i class="fa fa-sign-out"></i>
+                    <span>Sign Out</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>

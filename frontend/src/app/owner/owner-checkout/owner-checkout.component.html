@@ -1,0 +1,151 @@
+<div class="checkout-container">
+    <!-- Header -->
+    <div class="checkout-header">
+        <button class="back-btn" (click)="cancel()">
+            <i class="fa fa-arrow-left"></i> Back
+        </button>
+        <h1>Secure Checkout</h1>
+    </div>
+
+    <div class="checkout-grid" *ngIf="!loading">
+        <!-- Main Content -->
+        <div class="checkout-main">
+            <!-- Order Summary Tablet/Mobile -->
+            <div class="mobile-summary card">
+                <h3>Order Summary</h3>
+                <div class="summary-row">
+                    <span>{{ plan?.name }}</span>
+                    <span>₹{{ plan?.price }}</span>
+                </div>
+            </div>
+
+            <!-- Payment Methods -->
+            <div class="payment-methods card">
+                <h2>Select Payment Method</h2>
+
+                <div class="method-options">
+                    <div class="method-card" [class.active]="paymentMode === 'UPI'" (click)="selectMode('UPI')">
+                        <div class="method-header">
+                            <i class="fa fa-qrcode"></i>
+                            <span>UPI (Google Pay, PhonePe, Bhim)</span>
+                        </div>
+                        <div class="method-check">
+                            <div class="radio-circle"></div>
+                        </div>
+                    </div>
+
+                    <div class="method-card" [class.active]="paymentMode === 'CARD'" (click)="selectMode('CARD')">
+                        <div class="method-header">
+                            <i class="fa fa-credit-card"></i>
+                            <span>Credit / Debit Card</span>
+                        </div>
+                        <div class="method-check">
+                            <div class="radio-circle"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UPI SUBSET -->
+                <div class="upi-details" *ngIf="paymentMode === 'UPI' && !processing">
+                    <div class="qr-section">
+                        <div class="qr-container">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=project@upi&pn=ProjectManagement&am={{plan?.price}}&cu=INR"
+                                alt="UPI QR">
+                        </div>
+                        <p class="qr-label">Scan to pay with any UPI app</p>
+                    </div>
+
+                    <div class="divider"><span>OR PAY VIA VPA</span></div>
+
+                    <div class="vpa-field">
+                        <label>UPI ID (VPA)</label>
+                        <div class="styled-input">
+                            <i class="fa fa-at"></i>
+                            <input type="text" [(ngModel)]="upiId" placeholder="e.g. mobile@upi or username@bank">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARD SUBSET -->
+                <div class="card-details" *ngIf="paymentMode === 'CARD' && !processing">
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <div class="styled-input">
+                            <i class="fa fa-credit-card"></i>
+                            <input type="text" placeholder="0000 0000 0000 0000">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry <span class="info-tip"
+                                    title="Month and Year of card expiry">(MM/YY)</span></label>
+                            <input type="text" placeholder="12/28">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV <span class="info-tip" title="3-digit security code on back of card">(3
+                                    Digits)</span></label>
+                            <input type="password" placeholder="***">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="payment-actions" *ngIf="paymentMode">
+                    <button class="pay-btn" (click)="processPayment()" [disabled]="processing">
+                        <span *ngIf="!processing">Pay ₹{{ plan?.price }} Now</span>
+                        <span *ngIf="processing"><i class="fa fa-spinner fa-spin"></i> Processing...</span>
+                    </button>
+                    <p class="secure-note"><i class="fa fa-lock"></i> Secured by 256-bit encryption</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Summary -->
+        <div class="checkout-sidebar">
+            <div class="summary-card card">
+                <h3>Order Summary</h3>
+                <div class="plan-info">
+                    <div class="plan-name">{{ plan?.name }}</div>
+                    <div class="plan-desc">{{ plan?.max_users }} members, {{ plan?.duration_months }} months</div>
+                </div>
+                <div class="summary-divider"></div>
+                <div class="summary-details">
+                    <div class="detail-row">
+                        <span>Base Price</span>
+                        <span>₹{{ plan?.price }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>GST (0%)</span>
+                        <span>₹0</span>
+                    </div>
+                    <div class="total-row">
+                        <span>Total Payable</span>
+                        <span>₹{{ plan?.price }}</span>
+                    </div>
+                </div>
+                <div class="guarantee">
+                    <i class="fa fa-shield-alt"></i>
+                    <span>Secure Payment Guarantee</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Processing Overlay -->
+    <div class="processing-overlay" *ngIf="processing">
+        <div class="processing-card">
+            <div class="loader-ring"></div>
+            <h2>{{ processingStatus }}</h2>
+            <p>Please do not refresh the page or press back...</p>
+            <div class="security-badges">
+                <i class="fa fa-shield"></i>
+                <span>PCI DSS Compliant</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="page-loader" *ngIf="loading">
+        <i class="fa fa-spinner fa-spin"></i>
+    </div>
+</div>

@@ -1,0 +1,119 @@
+<div class="analytics-container">
+    <div class="page-header">
+        <div class="header-left">
+            <h1>Platform Analytics</h1>
+            <p class="subtitle">Detailed revenue and growth metrics</p>
+        </div>
+        <div class="header-actions">
+            <button class="refresh-btn" (click)="fetchAnalytics()" [disabled]="loading">
+                <i class="fas fa-sync-alt" [class.fa-spin]="loading"></i>
+                Refresh Data
+            </button>
+        </div>
+    </div>
+
+    <div class="loading-overlay" *ngIf="loading && !analytics">
+        <div class="spinner"></div>
+        <p>Analyzing platform data...</p>
+    </div>
+
+    <div class="analytics-content" *ngIf="analytics">
+        <!-- Overview Cards -->
+        <div class="overview-grid">
+            <div class="metric-card">
+                <div class="metric-icon revenue">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="metric-details">
+                    <span class="label">Total Revenue</span>
+                    <span class="value">₹{{ analytics.total_revenue | number:'1.0-0' }}</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon signups">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div class="metric-details">
+                    <span class="label">Monthly Revenue</span>
+                    <span class="value">₹{{ analytics.monthly_revenue | number:'1.0-0' }}</span>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon growth">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="metric-details">
+                    <span class="label">Active Subscriptions</span>
+                    <span class="value">{{ analytics.active_subscriptions }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <!-- Revenue Trend -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Revenue Trend (Last 6 Months)</h3>
+                    <span class="chart-badge">Currency: INR</span>
+                </div>
+                <div class="chart-body">
+                    <div class="simple-bar-chart">
+                        <div class="bar-group" *ngFor="let label of analytics.revenue_analytics.labels; let i = index">
+                            <div class="bar-wrapper">
+                                <div class="bar revenue-bar"
+                                    [style.height]="getBarHeight(analytics.revenue_analytics.data[i], getMax(analytics.revenue_analytics.data))"
+                                    [title]="'₹' + analytics.revenue_analytics.data[i]">
+                                    <span class="bar-value"
+                                        *ngIf="analytics.revenue_analytics.data[i] > 0">₹{{analytics.revenue_analytics.data[i]
+                                        | number:'1.0-0'}}</span>
+                                </div>
+                            </div>
+                            <span class="bar-label">{{ label | slice:0:3 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signups Trend -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h3>Organisation Signups (Last 6 Months)</h3>
+                    <span class="chart-badge">New Companies</span>
+                </div>
+                <div class="chart-body">
+                    <div class="simple-bar-chart">
+                        <div class="bar-group" *ngFor="let label of analytics.signup_analytics.labels; let i = index">
+                            <div class="bar-wrapper">
+                                <div class="bar signup-bar"
+                                    [style.height]="getBarHeight(analytics.signup_analytics.data[i], getMax(analytics.signup_analytics.data))"
+                                    [title]="analytics.signup_analytics.data[i] + ' Signups'">
+                                    <span class="bar-value"
+                                        *ngIf="analytics.signup_analytics.data[i] > 0">{{analytics.signup_analytics.data[i]}}</span>
+                                </div>
+                            </div>
+                            <span class="bar-label">{{ label | slice:0:3 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Insights -->
+        <div class="insights-section">
+            <div class="insight-card">
+                <h3>Subscription Health</h3>
+                <div class="health-metrics">
+                    <div class="health-item">
+                        <span class="health-label">Churn Count</span>
+                        <span class="health-value text-danger">{{ analytics.churned_companies }}</span>
+                    </div>
+                    <div class="health-item">
+                        <span class="health-label">New Orgs (30d)</span>
+                        <span class="health-value text-success">{{ analytics.new_organisations_last_30_days }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

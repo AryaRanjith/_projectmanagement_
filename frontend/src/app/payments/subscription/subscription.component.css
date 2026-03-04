@@ -1,0 +1,159 @@
+.pricing-container {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    min-height: 100vh;
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent),
+        radial-gradient(circle at bottom left, rgba(168, 85, 247, 0.05), transparent);
+}
+
+.pricing-header h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.pricing-header p {
+    color: #64748b;
+    font-size: 1.25rem;
+    margin-bottom: 3rem;
+}
+
+.plans-grid {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.plan-card {
+    background: white;
+    border-radius: 24px;
+    padding: 2.5rem;
+    width: 350px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+.plan-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+    border-color: #6366f1;
+}
+
+.plan-card.popular {
+    border: 2px solid #6366f1;
+}
+
+.plan-card.selected {
+    border: 3px solid #6366f1;
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: 0 30px 60px -15px rgba(99, 102, 241, 0.35);
+    background: linear-gradient(to bottom, #ffffff, #f5f3ff);
+}
+
+.plan-card.selected .btn-subscribe {
+    transform: scale(1.05);
+}
+
+.popular-badge {
+    position: absolute;
+    top: 1rem;
+    right: -2rem;
+    background: #6366f1;
+    color: white;
+    padding: 0.25rem 3rem;
+    transform: rotate(45deg);
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.plan-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.plan-price {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 1.5rem 0;
+}
+
+.plan-price span {
+    font-size: 1rem;
+    color: #64748b;
+    font-weight: 400;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 2rem 0;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.features-list li {
+    padding: 0.75rem 0;
+    color: #475569;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.features-list li::before {
+    content: '✓';
+    color: #6366f1;
+    font-weight: bold;
+}
+
+.btn-subscribe {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    margin-top: auto;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.3);
+    opacity: 0.95;
+}
+
+.loading-spinner {
+    font-size: 1.5rem;
+    color: #6366f1;
+    margin: 5rem 0;
+}
+
+.error-message {
+    background: #fef2f2;
+    color: #b91c1c;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}

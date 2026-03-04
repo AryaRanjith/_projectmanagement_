@@ -1,0 +1,103 @@
+.navbar {
+    height: 70px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid #eef2f6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-toggle {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #64748b;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.btn-toggle:hover {
+    background: #f1f5f9;
+    color: #6366f1;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.logo i {
+    color: #6366f1;
+    font-size: 24px;
+}
+
+.logo .badge {
+    font-size: 10px;
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    vertical-align: middle;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.user-role {
+    font-size: 11px;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-logout {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid #f1f5f9;
+    background: white;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background: #fee2e2;
+    color: #ef4444;
+    border-color: #fee2e2;
+}

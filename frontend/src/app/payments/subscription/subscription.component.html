@@ -1,0 +1,38 @@
+<app-navbar></app-navbar>
+
+<div class="pricing-container">
+  <div class="pricing-header">
+    <h1>Simple, transparent pricing</h1>
+    <p>Choose the plan that's right for your organisation</p>
+  </div>
+
+  <div *ngIf="loading" class="loading-spinner">
+    Fetching latest plans...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+
+  <div class="plans-grid" *ngIf="!loading && !error">
+    <div *ngFor="let plan of plans" class="plan-card" [class.popular]="plan.plan_type === 'ENT'"
+      [class.selected]="selectedPlanId === plan.id" (click)="selectPlan(plan.id)">
+      <div *ngIf="plan.plan_type === 'ENT'" class="popular-badge">Popular</div>
+
+      <h3 class="plan-name">{{ plan.name }}</h3>
+      <div class="plan-price">₹{{ plan.price }}<span> / {{ plan.duration_months }} Months</span></div>
+
+      <ul class="features-list">
+        <li>Up to {{ plan.max_users }} Employees</li>
+        <li>Unlimited Projects</li>
+        <li>Email Support</li>
+        <li *ngIf="plan.plan_type === 'ENT'">Priority Support</li>
+        <li *ngIf="plan.plan_type === 'ENT'">Custom Branding</li>
+      </ul>
+
+      <button (click)="subscribe(plan.id); $event.stopPropagation()" class="btn-subscribe btn-primary">
+        {{ authService.isLoggedIn() ? 'Get Started' : 'Sign up to Continue' }}
+      </button>
+    </div>
+  </div>
+</div>

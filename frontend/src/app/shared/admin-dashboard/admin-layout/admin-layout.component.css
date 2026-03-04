@@ -1,0 +1,38 @@
+.admin-container {
+    min-height: 100vh;
+    background: #ffffff;
+    /* Clean white canvas, sections will have borders/bg */
+    position: relative;
+}
+
+.main-content {
+    padding-top: 64px;
+    padding-left: 260px;
+    min-height: 100vh;
+    transition: padding-left 0.3s cubic-bezier(0.2, 0, 0, 1);
+    width: 100%;
+    box-sizing: border-box;
+    background: #fdfdfd;
+    /* Very subtle off-white for content area */
+}
+
+.main-content.expanded {
+    padding-left: 72px;
+}
+
+.content-wrapper {
+    padding: 32px 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .main-content {
+        padding-left: 0;
+    }
+
+    .main-content.expanded {
+        padding-left: 0;
+    }
+}

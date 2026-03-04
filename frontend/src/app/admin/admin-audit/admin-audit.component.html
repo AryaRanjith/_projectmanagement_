@@ -1,0 +1,44 @@
+<div class="admin-page-header">
+    <h2>Audit Logs</h2>
+    <div class="header-actions">
+        <button class="btn btn-outline" (click)="ngOnInit()">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+    </div>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Action</th>
+                <th>Target</th>
+                <th>Admin</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let log of logs">
+                <td>
+                    <span class="action-badge" [ngClass]="{
+            'action-create': log.action.includes('CREATED'),
+            'action-delete': log.action.includes('DELETED'),
+            'action-update': log.action.includes('UPDATED') || log.action.includes('SUSPEND'),
+            'action-login': log.action.includes('LOGIN')
+          }">{{ log.action }}</span>
+                </td>
+                <td class="target-cell">{{ log.target || log.organisation_name || 'N/A' }}</td>
+                <td>
+                    <div class="admin-user">
+                        <div class="avatar-xs">{{ (log.admin_username || 'S')[0] | uppercase }}</div>
+                        <span>{{ log.admin_username || 'System' }}</span>
+                    </div>
+                </td>
+                <td>{{ log.created_at | date:'medium' }}</td>
+            </tr>
+            <tr *ngIf="logs.length === 0 && !loading">
+                <td colspan="4" class="text-center py-4 text-muted">No audit logs found.</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
