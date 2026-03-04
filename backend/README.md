@@ -1,7 +1,6 @@
-<<<<<<< HEAD
-"# angular-django-project" 
-"# _projectmanagement_" 
-"# _projectmanagement_" 
-=======
-# _projectmanagement_
->>>>>>> eef328af9e6cf2db9c3ac40a14e4f4a367b0fce2
+A full-stack Multi-Tenant SaaS Project Management Application built using:
+Backend: Django + Django REST Framework
+Authentication: JWT (SimpleJWT)
+Frontend: Angular
+Database: SQLite
+Architecture: Multi-Tenant (Organization-based isolation
